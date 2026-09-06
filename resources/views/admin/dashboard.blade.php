@@ -138,7 +138,7 @@
                             More info <i class="bi bi-link-45deg"></i>
                         </a>
                     </div>
-                    <!--end::Small Box Widget 4-->
+                   
                 </div>
                 <!--end::Col-->
             </div>
