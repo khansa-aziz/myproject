@@ -1,4 +1,3 @@
-
 <nav class="app-header navbar navbar-expand bg-body">
   <!--begin::Container-->
   <div class="container-fluid">
@@ -368,9 +367,12 @@
               Profile
             </a>
 
-            <a href="#" class="btn btn-outline-danger float-end">
-              Sign out
-            </a>
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+              @csrf
+              <button type="submit" class="btn btn-outline-danger float-end">
+                Sign out
+              </button>
+            </form>
           </li>
 
         </ul>

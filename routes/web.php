@@ -1,44 +1,21 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return view('login');
-});
+Route::redirect('/', '/login');
 
-Route::post('/login', function (Request $request) {
+Route::get('/login', [UserController::class, 'showLogin'])
+    ->name('login');
 
-    $credentials = $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-    ]);
+Route::post('/login', [UserController::class, 'login']);
 
-    if (Auth::attempt([
-        'name' => $credentials['username'],
-        'password' => $credentials['password'],
-    ])) {
-        $request->session()->regenerate();
+Route::prefix('admin')->middleware('auth.custom')->group(function () {
 
-        return redirect('/dashboard');
-    }
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
-    return back()->withErrors([
-        'username' => 'Username or password is incorrect.',
-    ]);
-});
-
-Route::get('/dashboard', function () {
-    return view('admin.layout.dashboard');
-})->middleware(\App\Http\Middleware\AuthMiddleware::class);
-
-Route::get('/logout', function (Request $request) {
-    Auth::logout();
-
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    return redirect('/');
+    Route::post('/logout', [UserController::class, 'logout'])
+        ->name('logout');
 });
