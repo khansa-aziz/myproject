@@ -49,21 +49,32 @@
         id="navigation">
 
         <!-- Dashboard -->
-        <li class="nav-item menu-open">
+        <li class="nav-item">
 
-          <a href="#" class="nav-link active">
+          <a href="{{ route('dashboard') }}" class="nav-link">
 
             <i class="nav-icon bi bi-speedometer"></i>
 
             <p>
               Dashboard
-              <i class="nav-arrow bi bi-chevron-right"></i>
             </p>
 
           </a>
 
-          <ul class="nav nav-treeview">
-          </ul>
+        </li>
+
+        <!-- Admin -->
+        <li class="nav-item">
+
+          <a href="{{ route('admins.index') }}" class="nav-link">
+
+            <i class="nav-icon bi bi-people"></i>
+
+            <p>
+              Admin
+            </p>
+
+          </a>
 
         </li>
 
