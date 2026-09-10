@@ -42,11 +42,12 @@ class AdminController extends Controller
     }
 
     // UPDATE - Show edit form
-    public function edit(Admin $admin)
-    {
-        return view('admin.edit', compact('admin'));
-    }
+    public function edit($id)
+{
+    $admin = Admin::findOrFail($id);
 
+    return view('admin.edit', compact('admin'));
+}
     // UPDATE - Save changes
     public function update(Request $request, Admin $admin)
     {

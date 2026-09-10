@@ -116,17 +116,25 @@
         rel="stylesheet"
         href="{{ asset('adminlte.css') }}" />
 
+    <!-- Custom CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/custom.css') }}" />
+
     <!-- ApexCharts -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
         crossorigin="anonymous" />
-
     <!-- JSVectorMap -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
         crossorigin="anonymous" />
+    <!-- DataTables CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
 </head>
 
 
@@ -135,10 +143,10 @@
     <div class="app-wrapper">
 
         <!-- Header -->
-       @include('admin.layout.header')
+        @include('admin.layout.header')
 
         <!-- Sidebar -->
-       @include('admin.layout.sidebar')
+        @include('admin.layout.sidebar')
 
         <!-- Main Content -->
         <main class="app-main">
@@ -149,45 +157,55 @@
 
         <!-- Footer -->
         @include('admin.layout.footer')
-        <script src="{{ asset('js/adminlte.js') }}"></script>
 
     </div>
-   <script>
-    const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
 
-    const Default = {
-        scrollbarTheme: 'os-theme-light',
-        scrollbarAutoHide: 'leave',
-        scrollbarClickScroll: true,
-    };
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    document.addEventListener('DOMContentLoaded', function() {
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
 
-        const sidebarWrapper = document.querySelector(
-            SELECTOR_SIDEBAR_WRAPPER
-        );
+    <!-- AdminLTE JS -->
+    <script src="{{ asset('js/adminlte.js') }}"></script>
 
-        const isMobile = window.innerWidth <= 992;
+    <!-- Sidebar Scrollbar -->
+    <script>
+        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
 
-        if (
-            sidebarWrapper &&
-            OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
-            !isMobile
-        ) {
-            OverlayScrollbarsGlobal.OverlayScrollbars(
-                sidebarWrapper, {
-                    scrollbars: {
-                        theme: Default.scrollbarTheme,
-                        autoHide: Default.scrollbarAutoHide,
-                        clickScroll: Default.scrollbarClickScroll,
-                    },
-                }
+        const Default = {
+            scrollbarTheme: 'os-theme-light',
+            scrollbarAutoHide: 'leave',
+            scrollbarClickScroll: true,
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const sidebarWrapper = document.querySelector(
+                SELECTOR_SIDEBAR_WRAPPER
             );
-        }
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('js/adminlte.js') }}"></script>
+
+            const isMobile = window.innerWidth <= 992;
+
+            if (
+                sidebarWrapper &&
+                OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
+                !isMobile
+            ) {
+                OverlayScrollbarsGlobal.OverlayScrollbars(
+                    sidebarWrapper, {
+                        scrollbars: {
+                            theme: Default.scrollbarTheme,
+                            autoHide: Default.scrollbarAutoHide,
+                            clickScroll: Default.scrollbarClickScroll,
+                        },
+                    }
+                );
+            }
+        });
+    </script>
+
 </body>
 
 </html>
