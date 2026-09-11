@@ -3,6 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>AdminLTE v4 | Dashboard</title>
 
@@ -163,9 +164,12 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
+   <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- AdminLTE JS -->
     <script src="{{ asset('js/adminlte.js') }}"></script>

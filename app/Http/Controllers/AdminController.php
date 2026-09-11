@@ -17,59 +17,70 @@ class AdminController extends Controller
 
     // CREATE - Show create form
     public function create()
-    {
-        return view('admin.create');
-    }
+{
+    $roles = \App\Models\Role::where('status', 1)->get();
+
+    return view('admin.create', compact('roles'));
+}
 
     // CREATE - Save admin
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:admins,email'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'unique:admins,email'],
+        'password' => ['required', 'string', 'min:8'],
+        'role_id' => ['required', 'exists:roles,id'],
+    ]);
 
-        Admin::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
+    Admin::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => bcrypt($validated['password']),
+        'role_id' => $validated['role_id'],
+    ]);
 
-        return redirect()
-            ->route('admins.index')
-            ->with('success', 'Admin created successfully.');
-    }
+    return redirect()
+        ->route('admins.index')
+        ->with('success', 'Admin created successfully.');
+}
+
 
     // UPDATE - Show edit form
-    public function edit($id)
+ public function edit(Admin $admin)
 {
-    $admin = Admin::findOrFail($id);
+    $roles = \App\Models\Role::where('status', 1)->get();
 
-    return view('admin.edit', compact('admin'));
+    return view('admin.edit', compact('admin', 'roles'));
 }
     // UPDATE - Save changes
     public function update(Request $request, Admin $admin)
-    {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:admins,email,' . $admin->id],
-            'password' => ['nullable', 'string', 'min:8'],
-        ]);
+{
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => [
+            'required',
+            'email',
+            'unique:admins,email,' . $admin->id,
+        ],
+        'password' => ['nullable', 'string', 'min:8'],
+        'role_id' => ['required', 'exists:roles,id'],
+    ]);
 
-        $admin->name = $validated['name'];
-        $admin->email = $validated['email'];
+    $admin->name = $validated['name'];
+    $admin->email = $validated['email'];
+    $admin->role_id = $validated['role_id'];
 
-        if (!empty($validated['password'])) {
-            $admin->password = bcrypt($validated['password']);
-        }
-
-        $admin->save();
-
-        return redirect()
-            ->route('admins.index')
-            ->with('success', 'Admin updated successfully.');
+    if (!empty($validated['password'])) {
+        $admin->password = bcrypt($validated['password']);
     }
+
+    $admin->save();
+
+    return redirect()
+        ->route('admins.index')
+        ->with('success', 'Admin updated successfully.');
+}
 
     // DELETE - Delete admin
     public function destroy(Admin $admin)
@@ -80,4 +91,17 @@ class AdminController extends Controller
             ->route('admins.index')
             ->with('success', 'Admin deleted successfully.');
     }
+public function toggleStatus(Admin $admin)
+{
+    $admin->status = $admin->status === 1 ? 0 : 1;
+    $admin->save();
+
+    return response()->json([
+        'success' => true,
+        'status' => $admin->status,
+        'message' => $admin->status === 1
+            ? 'Admin activated successfully.'
+            : 'Admin deactivated successfully.',
+    ]);
+}
 }

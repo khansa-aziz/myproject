@@ -4,18 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model
+class Role extends Model
 {
     protected $fillable = [
         'name',
-        'email',
-        'password',
         'status',
-        'role_id',
     ];
 
-    public function role()
+    public function admins()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasMany(Admin::class);
     }
 }

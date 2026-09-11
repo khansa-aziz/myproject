@@ -8,7 +8,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <h1 class="mb-0 fs-3">Admins</h1>
+                <h1 class="mb-0 fs-3">Roles</h1>
             </div>
 
             <div class="col-sm-6">
@@ -20,7 +20,7 @@
                         </li>
 
                         <li class="breadcrumb-item active" aria-current="page">
-                            Admins
+                            Roles
                         </li>
 
                     </ol>
@@ -45,14 +45,14 @@
                 <div class="d-flex justify-content-between align-items-center">
 
                     <h3 class="card-title mb-0">
-                        Admin List
+                        Role List
                     </h3>
 
-                    <a href="{{ route('admins.create') }}"
+                    <a href="{{ route('roles.create') }}"
                         class="btn btn-primary">
 
                         <i class="bi bi-plus-lg me-1"></i>
-                        Add Admin
+                        Add Role
 
                     </a>
 
@@ -75,7 +75,7 @@
 
                 <div class="table-responsive">
 
-                    <table id="adminTable"
+                    <table id="roleTable"
                         class="table table-hover table-striped mb-0">
 
                         <thead>
@@ -83,11 +83,7 @@
 
                                 <th width="80">#</th>
 
-                                <th>Name</th>
-
-                                <th>Email</th>
-
-                                <th>Role</th>
+                                <th>Role Name</th>
 
                                 <th>Created At</th>
 
@@ -103,7 +99,7 @@
 
                         <tbody>
 
-                            @forelse($admins as $admin)
+                            @forelse($roles as $role)
 
                                 <tr>
 
@@ -113,23 +109,12 @@
 
 
                                     <td>
-                                        {{ $admin->name }}
+                                        {{ $role->name }}
                                     </td>
 
 
                                     <td>
-                                        {{ $admin->email }}
-                                    </td>
-
-
-                                    <!-- Role -->
-                                    <td>
-                                        {{ $admin->role?->name ?? 'No Role' }}
-                                    </td>
-
-
-                                    <td>
-                                        {{ $admin->created_at->format('d M Y') }}
+                                        {{ $role->created_at->format('d M Y') }}
                                     </td>
 
 
@@ -142,8 +127,8 @@
                                                 class="form-check-input status-toggle"
                                                 type="checkbox"
                                                 role="switch"
-                                                data-id="{{ $admin->id }}"
-                                                {{ $admin->status == 1 ? 'checked' : '' }}
+                                                data-id="{{ $role->id }}"
+                                                {{ $role->status == 1 ? 'checked' : '' }}
                                             >
 
                                         </div>
@@ -153,7 +138,7 @@
 
                                     <!-- Status Value -->
                                     <td>
-                                        {{ $admin->status }}
+                                        {{ $role->status }}
                                     </td>
 
 
@@ -163,7 +148,7 @@
                                         <div class="d-flex gap-2">
 
                                             <!-- Edit Button -->
-                                            <a href="{{ route('admin.edit', $admin->id) }}"
+                                            <a href="{{ route('roles.edit', $role->id) }}"
                                                 class="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
                                                 style="width: 75px;">
 
@@ -174,10 +159,10 @@
 
 
                                             <!-- Delete Button -->
-                                            <form action="{{ route('admins.destroy', $admin->id) }}"
+                                            <form action="{{ route('roles.destroy', $role->id) }}"
                                                 method="POST"
                                                 class="m-0"
-                                                onsubmit="return confirm('Are you sure you want to delete this admin?');">
+                                                onsubmit="return confirm('Are you sure you want to delete this role?');">
 
                                                 @csrf
                                                 @method('DELETE')
@@ -203,14 +188,14 @@
 
                                 <tr>
 
-                                    <td colspan="8"
+                                    <td colspan="6"
                                         class="text-center py-4">
 
                                         <div class="text-muted">
 
-                                            <i class="bi bi-people fs-3 d-block mb-2"></i>
+                                            <i class="bi bi-person-badge fs-3 d-block mb-2"></i>
 
-                                            No admins found.
+                                            No roles found.
 
                                         </div>
 
@@ -237,24 +222,17 @@
 <!--end::App Content-->
 
 @endsection
-
-
 <script>
-
     document.addEventListener('DOMContentLoaded', function () {
-
-        new DataTable('#adminTable');
-
 
         document.querySelectorAll('.status-toggle').forEach(function (toggle) {
 
             toggle.addEventListener('change', function () {
 
                 const checkbox = this;
-                const adminId = checkbox.dataset.id;
+                const roleId = checkbox.dataset.id;
 
-
-                fetch(`/admin/admins/${adminId}/toggle-status`, {
+                fetch(`/admin/roles/${roleId}/toggle-status`, {
 
                     method: 'PATCH',
 
@@ -286,9 +264,9 @@
 
                         console.log(data.message);
 
-                        // Update the Value column immediately
                         const row = checkbox.closest('tr');
-                        const valueCell = row.children[6];
+
+                        const valueCell = row.children[4];
 
                         valueCell.textContent = data.status;
 
@@ -313,5 +291,4 @@
         });
 
     });
-
 </script>

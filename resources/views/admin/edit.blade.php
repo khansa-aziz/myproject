@@ -109,6 +109,36 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="role_id" class="form-label">
+                            Role
+                        </label>
+
+                        <select
+                            name="role_id"
+                            id="role_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">Select Role</option>
+
+                            @foreach ($roles as $role)
+                                <option
+                                    value="{{ $role->id }}"
+                                    {{ old('role_id', $admin->role_id) == $role->id ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                        @error('role_id')
+                        <div class="text-danger mt-1">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
                     <div class="d-flex gap-2">
 
                         <button type="submit" class="btn btn-primary">
