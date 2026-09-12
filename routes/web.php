@@ -5,93 +5,124 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\AdminPermissionController;
 
 
 Route::redirect('/', '/login');
 
 
+// =========================
 // Login
+// =========================
+
 Route::get('/login', [UserController::class, 'showLogin'])
     ->name('login');
 
 Route::post('/login', [UserController::class, 'login']);
 
 
+// =========================
 // Protected Admin Routes
+// =========================
+
 Route::prefix('admin')->middleware('auth.custom')->group(function () {
 
+    // =========================
     // Dashboard
+    // =========================
+
     Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+        ->name('dashboard')
+        ->middleware('permission:dashboard,read');
 
 
     // =========================
     // Admin CRUD
     // =========================
 
-    // Admin List
     Route::get('/admins', [AdminController::class, 'index'])
-        ->name('admins.index');
+        ->name('admins.index')
+        ->middleware('permission:admins,read');
 
-    // Create Admin Form
     Route::get('/admins/create', [AdminController::class, 'create'])
-        ->name('admins.create');
+        ->name('admins.create')
+        ->middleware('permission:admins,read_write');
 
-    // Store Admin
     Route::post('/admins', [AdminController::class, 'store'])
-        ->name('admins.store');
+        ->name('admins.store')
+        ->middleware('permission:admins,read_write');
 
-    // Edit Admin Form
     Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])
-        ->name('admin.edit');
+        ->name('admin.edit')
+        ->middleware('permission:admins,read_write');
 
-    // Update Admin
     Route::put('/admins/{admin}', [AdminController::class, 'update'])
-        ->name('admins.update');
+        ->name('admins.update')
+        ->middleware('permission:admins,read_write');
 
-    // Delete Admin
     Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])
-        ->name('admins.destroy');
+        ->name('admins.destroy')
+        ->middleware('permission:admins,read_write');
 
-    // Toggle Admin Status
     Route::patch('/admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus'])
-        ->name('admins.toggle-status');
+        ->name('admins.toggle-status')
+        ->middleware('permission:admins,read_write');
 
 
     // =========================
     // Role CRUD
     // =========================
 
-    // Role List
     Route::get('/roles', [RoleController::class, 'index'])
-        ->name('roles.index');
+        ->name('roles.index')
+        ->middleware('permission:roles,read');
 
-    // Create Role Form
     Route::get('/roles/create', [RoleController::class, 'create'])
-        ->name('roles.create');
+        ->name('roles.create')
+        ->middleware('permission:roles,read_write');
 
-    // Store Role
     Route::post('/roles', [RoleController::class, 'store'])
-        ->name('roles.store');
+        ->name('roles.store')
+        ->middleware('permission:roles,read_write');
 
-    // Edit Role Form
     Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])
-        ->name('roles.edit');
+        ->name('roles.edit')
+        ->middleware('permission:roles,read_write');
 
-    // Update Role
     Route::put('/roles/{role}', [RoleController::class, 'update'])
-        ->name('roles.update');
+        ->name('roles.update')
+        ->middleware('permission:roles,read_write');
 
-    // Delete Role
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])
-        ->name('roles.destroy');
+        ->name('roles.destroy')
+        ->middleware('permission:roles,read_write');
 
-    // Toggle Role Status
     Route::patch('/roles/{role}/toggle-status', [RoleController::class, 'toggleStatus'])
-        ->name('roles.toggle-status');
+        ->name('roles.toggle-status')
+        ->middleware('permission:roles,read_write');
 
 
+    // =========================
+    // Admin Permissions
+    // =========================
+
+    Route::get('/permissions', [AdminPermissionController::class, 'index'])
+        ->name('permissions.index')
+        ->middleware('permission:permissions,read');
+
+    Route::post('/permissions/save', [AdminPermissionController::class, 'save'])
+        ->name('permissions.save')
+        ->middleware('permission:permissions,read_write');
+
+    Route::get('/permissions/{admin}/get', [AdminPermissionController::class, 'getPermissions'])
+        ->name('permissions.get')
+        ->middleware('permission:permissions,read');
+
+
+    // =========================
     // Logout
+    // =========================
+
     Route::post('/logout', [UserController::class, 'logout'])
         ->name('logout');
 

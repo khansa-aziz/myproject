@@ -1,3 +1,4 @@
+
 @extends('admin.layout.layout')
 
 @section('content')
@@ -13,6 +14,7 @@
             <div class="col-sm-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb float-sm-end">
+
                         <li class="breadcrumb-item">
                             <a href="{{ route('dashboard') }}">Home</a>
                         </li>
@@ -24,6 +26,7 @@
                         <li class="breadcrumb-item active">
                             Edit Admin
                         </li>
+
                     </ol>
                 </nav>
             </div>
@@ -45,11 +48,15 @@
 
             <div class="card-body">
 
-                <form action="{{ route('admins.update', $admin->id) }}" method="POST">
+                <form
+                    action="{{ route('admins.update', $admin->id) }}"
+                    method="POST"
+                    enctype="multipart/form-data">
 
                     @csrf
                     @method('PUT')
 
+                    {{-- Name --}}
                     <div class="mb-3">
                         <label for="name" class="form-label">
                             Name
@@ -64,12 +71,13 @@
                             required>
 
                         @error('name')
-                        <div class="text-danger mt-1">
-                            {{ $message }}
-                        </div>
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
 
+                    {{-- Email --}}
                     <div class="mb-3">
                         <label for="email" class="form-label">
                             Email
@@ -84,12 +92,13 @@
                             required>
 
                         @error('email')
-                        <div class="text-danger mt-1">
-                            {{ $message }}
-                        </div>
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
 
+                    {{-- Password --}}
                     <div class="mb-3">
                         <label for="password" class="form-label">
                             Password
@@ -103,12 +112,13 @@
                             placeholder="Leave blank to keep current password">
 
                         @error('password')
-                        <div class="text-danger mt-1">
-                            {{ $message }}
-                        </div>
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
 
+                    {{-- Role --}}
                     <div class="mb-3">
                         <label for="role_id" class="form-label">
                             Role
@@ -133,19 +143,77 @@
                         </select>
 
                         @error('role_id')
-                        <div class="text-danger mt-1">
-                            {{ $message }}
-                        </div>
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
 
+                    {{-- Current Image --}}
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Current Image
+                        </label>
+
+                        <div>
+                            @if($admin->image)
+
+                                <img
+                                    src="{{ asset('storage/' . $admin->image) }}"
+                                    alt="{{ $admin->name }}"
+                                    width="100"
+                                    height="100"
+                                    style="object-fit: cover; border-radius: 50%;">
+
+                            @else
+
+                                <span class="text-muted">
+                                    No Image
+                                </span>
+
+                            @endif
+                        </div>
+
+                    </div>
+
+                    {{-- New Image --}}
+                    <div class="mb-3">
+
+                        <label for="image" class="form-label">
+                            Change Image
+                        </label>
+
+                        <input
+                            type="file"
+                            name="image"
+                            id="image"
+                            class="form-control"
+                            accept="image/jpeg,image/png,image/webp">
+
+                        <small class="text-muted">
+                            Allowed: JPG, JPEG, PNG, WEBP. Maximum size: 2MB.
+                        </small>
+
+                        @error('image')
+                            <div class="text-danger mt-1">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                    {{-- Buttons --}}
                     <div class="d-flex gap-2">
 
-                        <button type="submit" class="btn btn-primary">
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
                             Update Admin
                         </button>
 
-                        <a href="{{ route('admins.index') }}"
+                        <a
+                            href="{{ route('admins.index') }}"
                             class="btn btn-secondary">
                             Cancel
                         </a>
@@ -162,3 +230,4 @@
 </div>
 
 @endsection
+

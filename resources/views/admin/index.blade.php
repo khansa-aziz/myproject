@@ -1,3 +1,4 @@
+
 @extends('admin.layout.layout')
 
 @section('content')
@@ -83,6 +84,8 @@
 
                                 <th width="80">#</th>
 
+                                <th width="100">Image</th>
+
                                 <th>Name</th>
 
                                 <th>Email</th>
@@ -109,6 +112,27 @@
 
                                     <td>
                                         {{ $loop->iteration }}
+                                    </td>
+
+
+                                    <!-- Admin Image -->
+                                    <td>
+                                        @if($admin->image)
+
+                                            <img
+                                                src="{{ asset('storage/' . $admin->image) }}"
+                                                alt="{{ $admin->name }}"
+                                                width="50"
+                                                height="50"
+                                                style="object-fit: cover; border-radius: 50%;">
+
+                                        @else
+
+                                            <span class="text-muted">
+                                                No Image
+                                            </span>
+
+                                        @endif
                                     </td>
 
 
@@ -203,7 +227,7 @@
 
                                 <tr>
 
-                                    <td colspan="8"
+                                    <td colspan="9"
                                         class="text-center py-4">
 
                                         <div class="text-muted">
@@ -243,7 +267,9 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        new DataTable('#adminTable');
+        new DataTable('#adminTable', {
+            pageLength: 25
+        });
 
 
         document.querySelectorAll('.status-toggle').forEach(function (toggle) {
@@ -286,9 +312,9 @@
 
                         console.log(data.message);
 
-                        // Update the Value column immediately
                         const row = checkbox.closest('tr');
-                        const valueCell = row.children[6];
+
+                        const valueCell = row.children[7];
 
                         valueCell.textContent = data.status;
 

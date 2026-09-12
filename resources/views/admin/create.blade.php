@@ -53,7 +53,11 @@
                         </h3>
                     </div>
 
-                    <form action="{{ route('admins.store') }}" method="POST">
+                    <form
+                        action="{{ route('admins.store') }}"
+                        method="POST"
+                        enctype="multipart/form-data">
+
                         @csrf
 
                         <div class="card-body">
@@ -68,6 +72,7 @@
                                 </div>
                             @endif
 
+                            {{-- Name --}}
                             <div class="mb-3">
                                 <label for="name" class="form-label">
                                     Name
@@ -83,6 +88,7 @@
                                     required>
                             </div>
 
+                            {{-- Email --}}
                             <div class="mb-3">
                                 <label for="email" class="form-label">
                                     Email
@@ -98,6 +104,7 @@
                                     required>
                             </div>
 
+                            {{-- Password --}}
                             <div class="mb-3">
                                 <label for="password" class="form-label">
                                     Password
@@ -111,42 +118,73 @@
                                     placeholder="Enter password"
                                     required>
                             </div>
+
+                            {{-- Role --}}
                             <div class="mb-3">
-    <label for="role_id" class="form-label">
-        Role
-    </label>
+                                <label for="role_id" class="form-label">
+                                    Role
+                                </label>
 
-    <select
-        name="role_id"
-        id="role_id"
-        class="form-select"
-        required>
+                                <select
+                                    name="role_id"
+                                    id="role_id"
+                                    class="form-select"
+                                    required>
 
-        <option value="">Select Role</option>
+                                    <option value="">Select Role</option>
 
-        @foreach ($roles as $role)
-            <option
-                value="{{ $role->id }}"
-                {{ old('role_id') == $role->id ? 'selected' : '' }}>
-                {{ $role->name }}
-            </option>
-        @endforeach
+                                    @foreach ($roles as $role)
+                                        <option
+                                            value="{{ $role->id }}"
+                                            {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                            {{ $role->name }}
+                                        </option>
+                                    @endforeach
 
-    </select>
-</div>
+                                </select>
+                            </div>
+
+                            {{-- Admin Image --}}
+                            <div class="mb-3">
+                                <label for="image" class="form-label">
+                                    Admin Image
+                                </label>
+
+                                <input
+                                    type="file"
+                                    name="image"
+                                    id="image"
+                                    class="form-control"
+                                    accept="image/jpeg,image/png,image/webp">
+
+                                @error('image')
+                                    <div class="text-danger mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
+                                <small class="text-muted">
+                                    Allowed: JPG, JPEG, PNG, WEBP. Maximum size: 2MB.
+                                </small>
+                            </div>
 
                         </div>
 
                         <div class="card-footer d-flex justify-content-end gap-2">
 
-                            <a href="{{ route('admins.index') }}"
-                               class="btn btn-secondary">
+                            <a
+                                href="{{ route('admins.index') }}"
+                                class="btn btn-secondary">
                                 Cancel
                             </a>
 
-                            <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit"
+                                class="btn btn-primary">
+
                                 <i class="bi bi-check-lg me-1"></i>
                                 Create Admin
+
                             </button>
 
                         </div>

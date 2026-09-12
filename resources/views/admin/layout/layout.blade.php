@@ -171,7 +171,7 @@
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- AdminLTE JS -->
+       <!-- AdminLTE JS -->
     <script src="{{ asset('js/adminlte.js') }}"></script>
 
     <!-- Sidebar Scrollbar -->
@@ -209,6 +209,9 @@
             }
         });
     </script>
+
+    {{-- Page-specific scripts --}}
+    @stack('scripts')
 
 </body>
 

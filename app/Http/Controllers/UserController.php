@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -12,31 +12,34 @@ class UserController extends Controller
         return view('login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
+   public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt([
-            'name' => $credentials['username'],
-            'password' => $credentials['password'],
-        ])) {
-            $request->session()->regenerate();
+    $admin = Admin::whereRaw(
+        'LOWER(name) = ?',
+        [strtolower($credentials['username'])]
+    )->first();
 
-            return redirect()->route('dashboard');
-        }
-
+    if (!$admin || !password_verify($credentials['password'], $admin->password)) {
         return back()->withErrors([
             'username' => 'Username or password is incorrect.',
         ])->onlyInput('username');
     }
 
+    // Admin ID session mein save karo
+    $request->session()->regenerate();
+    $request->session()->put('admin_id', $admin->id);
+
+    return redirect()->route('dashboard');
+}
+
     public function logout(Request $request)
     {
-        Auth::logout();
-
+        $request->session()->forget('admin_id');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

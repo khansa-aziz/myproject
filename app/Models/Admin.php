@@ -12,10 +12,16 @@ class Admin extends Model
         'password',
         'status',
         'role_id',
+        'image',
     ];
 
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function permissions()
+    {
+        return $this->hasMany(AdminPermission::class);
     }
 }
